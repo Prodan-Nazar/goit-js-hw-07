@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Tasks</title>
+    <style>
+        .gallery {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .gallery-item {
+            margin: 10px;
+        }
+
+        #boxes {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        #boxes div {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <ul id="categories">
+        <li class="item">
+            <h2>Animals</h2>
+            <ul>
+                <li>Cat</li>
+                <li>Hamster</li>
+                <li>Horse</li>
+                <li>Parrot</li>
+            </ul>
+        </li>
+        <li class="item">
+            <h2>Products</h2>
+            <ul>
+                <li>Bread</li>
+                <li>Parsley</li>
+                <li>Cheese</li>
+            </ul>
+        </li>
+        <li class="item">
+            <h2>Technologies</h2>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>React</li>
+                <li>Node.js</li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="gallery"></ul>
+    <input type="text" id="name-input" placeholder="Please enter your name" />
+    <h1>Hello, <span id="name-output">Anonymous</span>!</h1>
+    <form class="login-form">
+        <label>
+            Email
+            <input type="email" name="email" />
+        </label>
+        <label>
+            Password
+            <input type="password" name="password" />
+        </label>
+        <button type="submit">Log in</button>
+    </form>
+    <div class="widget">
+        <p>Background color: <span class="color">-</span></p>
+        <button type="button" class="change-color">Change color</button>
+    </div>
+    <div id="controls">
+        <input type="number" min="1" max="100" step="1" />
+        <button type="button" data-create>Create</button>
+        <button type="button" data-destroy>Destroy</button>
+    </div>
+    <div id="boxes"></div>
+    <script>
+            const categoriesList = document.querySelectorAll('#categories .item');
+            console.log(`Total categories: ${categoriesList.length}`);
+            categoriesList.forEach(category => {
+                const categoryName = category.querySelector('h2').textContent;
+                const categoryItems = category.querySelectorAll('ul li');
+                console.log(`Category: ${categoryName}`);
+                console.log(`Number of items: ${categoryItems.length}`);
+            });
+                const images = [
+                    { url: 'https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', alt: 'White and Black Long Fur Cat' },
+                    { url: 'https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', alt: 'Orange and White Koi Fish Near Yellow Koi Fish' },
+                    { url: 'https://images.pexels.com/photos/219943/pexels-photo-219943.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', alt: 'Group of Horses Running' },
+                    { url: 'https://images.pexels.com/photos/66898/elephant-cub-tsavo-kenya-66898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Elephant Beside on Baby Elephant' },
+                    { url: 'https://images.pexels.com/photos/37833/rainbow-lorikeet-parrots-australia-rainbow-37833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Blue Geeen and Orange Parrot' },
+                    { url: 'https://images.pexels.com/photos/247376/pexels-photo-247376.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Zebras on Zebra' }
+                ];
+                const galleryContainer = document.querySelector('.gallery');
+                function createGallery(images) {
+                    const galleryItems = images.map(image => {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('gallery-item');
+                        const imgElement = document.createElement('img');
+                        imgElement.src = image.url;
+                        imgElement.alt = image.alt;
+                        imgElement.width = 200;
+                        imgElement.height = 150;
+                        listItem.appendChild(imgElement);
+                        return listItem;
+                    });
+                    galleryContainer.innerHTML = '';
+                    galleryContainer.append(...galleryItems);
+                }
+                createGallery(images);
+            const nameInput = document.getElementById('name-input');
+            const nameOutput = document.getElementById('name-output');
+            nameInput.addEventListener('input', updateName);
+            function updateName() {
+                const inputValue = nameInput.value.trim();
+                nameOutput.textContent = inputValue === '' ? 'Anonymous' : inputValue;
+            }
+            const loginForm = document.querySelector('.login-form');
+            loginForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const emailValue = loginForm.elements.email.value.trim();
+                const passwordValue = loginForm.elements.password.value.trim();
+                if (!emailValue || !passwordValue) {
+                    alert('All form fields must be filled in');
+                    return;
+                }
+                const formData = {
+                    email: emailValue,
+                    password: passwordValue
+                };
+                console.log(formData);
+                loginForm.reset();
+            });
+            // Task 5
+            const body = document.body;
+            const colorSpan = document.querySelector('.color');
+            const changeColorButton = document.querySelector('.change-color');
+            function getRandomHexColor() {
+                return `#${Math.floor(Math.random() * 16777215)
+                    .toString(16)
+                    .padStart(6, 0)}`;
+            }
+            changeColorButton.addEventListener('click', function () {
+                const newColor = getRandomHexColor();
+                body.style.backgroundColor = newColor;
+                colorSpan.textContent = newColor;
+            });
+            const controlsContainer = document.getElementById('controls');
+            const inputNumber = controlsContainer.querySelector('input');
+            const createButton = controlsContainer.querySelector('[data-create]');
+            const destroyButton = controlsContainer.querySelector('[data-destroy]');
+            const boxesContainer = document.getElementById('boxes');
+            createButton.addEventListener('click', createBoxes);
+            destroyButton.addEventListener('click', destroyBoxes);
+            function createBoxes() {
+                const boxCount = parseInt(inputNumber.value, 10);
+                if (isNaN(boxCount) || boxCount < 1 || boxCount > 100) {
+                    alert('Please enter a number between 1 and 100');
+                    return;
+                }
+                const boxes = Array.from({ length: boxCount }, (_, index) => {
+                    const box = document.createElement('div');
+                    box.style.width = `${30 + index * 10}px`;
+                    box.style.height = `${30 + index * 10}px`;
+                    box.style.backgroundColor = getRandomHexColor();
+                    return box;
+                });
+                boxesContainer.innerHTML = '';
+                boxesContainer.append(...boxes);
+                inputNumber.value = '';
+            }
+            function destroyBoxes() {
+                boxesContainer.innerHTML = '';
+            }
+        </script>
+</body>
+</html>
+</body>
+</html>
